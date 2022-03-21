@@ -1,0 +1,50 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/employee.css">
+    <link rel="stylesheet" href="/css/table/table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-internal.ejs') %>
+    <main>    
+         <form class="record-form" action="/ic/record" method="GET">
+             <div class="form-control">
+                 <input type="text" name="search" required placeholder="Unesi ime ili prezime">
+                 <input class="btn" type="submit" value="Traži">
+             </div>
+         </form>    
+
+         <% if (employees.length > 0) { %>  
+            <div class="container">          
+                <ul class="responsive-table">
+                <li class="table-header">
+                    <div class="col col-1 text">Ime i Prezime</div>
+                    <div class="col col-2 text">PJ</div>
+                    <div class="col col-3 text">Pozicija</div>
+                    <div class="col col-4"></div>
+                </li>
+                <% employees.forEach(e => { %>
+                    <li class="table-row">
+                        <div class="col col-1" data-label="Ime i Prezime"><%= e.firstName %> <%= e.lastName %></div>
+                        <div class="col col-2" data-label="Poslovna jedinica"><%= e.businessUnit.name %> </div>
+                        <div class="col col-3" data-label="Pozicija"><%= e.role.role %></div>
+                        <div class="col col-4" data-label="">
+                            <a class="btn success" href="/ic/report/<%= e._id %>" >Pregled</a>  
+                        <a class="btn danger" href="/ic/add-record/<%= e._id %>" >Sankcioniši</a>
+                        </div>
+                        
+                    </li>
+                <% }) %> 
+                </ul>
+            </div>
+          <% } %>      
+          
+          <% if (hasError)  { %>   
+            <div class="centered">
+                <h3><%= errorMessage %> </h3>  
+            </div>                     
+        <% } %> 
+    
+    </main>
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,113 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+    <link rel="stylesheet" href="/css/grade-form/form.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-supervisor.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>  
+        <form class="form-all" action="/grade/add-grade" method="POST">
+                 <div role="main">
+                  <ul class="form-section">                
+                  
+                        <table cellPadding="4" cellSpacing="0" class="form-matrix-table">
+                          <tr class="">
+                            <th class="" style="border:none">
+                               
+                            </th>
+                            <th scope="col" class="form-matrix-headers form-matrix-column-headers">
+                              <label id="label_7_col_0"> Ekspeditivnost </label>
+                            </th>
+                            <th scope="col" class="form-matrix-headers form-matrix-column-headers">
+                              <label id="label_7_col_1"> Stručnost u radu </label>
+                            </th>
+                            <th scope="col" class="form-matrix-headers form-matrix-column-headers">
+                              <label id="label_7_col_2"> Volja za rad </label>
+                            </th>
+                            <th scope="col" class="form-matrix-headers form-matrix-column-headers">
+                              <label id="label_7_col_3"> Pomaganje drugim uposlenicima u radu i napredovanju </label>
+                            </th>     
+                            <th scope="col" class="form-matrix-headers form-matrix-column-headers">
+                              <label id="label_7_col_3"> Komentar </label>
+                            </th>                  
+                          </tr>
+                          <tr class="">
+                            <% employees.forEach((e) => { %> 
+                              <th scope="row" class="form-matrix-headers form-matrix-row-headers">
+                                <label id="label_7_row_0"> <%=e.firstName %> <%=e.lastName %>    </label>
+                              </th>
+                              <input type="hidden" value="<%= e._id %>" name="employeeId">     
+                            <td class="form-matrix-values" >
+                              <select id="input_7_0_0"  name="_<%= e._id %>" style="width:100%;box-sizing:border-box">
+                                <option aria-label="Please select">  </option>
+                                <option value="1"> 1 </option>
+                                <option value="2"> 2 </option>
+                                <option value="3"> 3 </option>
+                                <option value="4"> 4 </option>
+                                <option value="5"> 5 </option>
+                              </select>
+                            </td>
+                            <td class="form-matrix-values">
+                              <select id="input_7_0_1" name="_<%= e._id %>"  style="width:100%;box-sizing:border-box">
+                                <option aria-label="Please select">  </option>
+                                <option value="1"> 1 </option>
+                                <option value="2"> 2 </option>
+                                <option value="3"> 3 </option>
+                                <option value="4"> 4 </option>
+                                <option value="5"> 5 </option>
+                              </select>
+                            </td>
+                            <td class="form-matrix-values">
+                              <select id="input_7_0_2" name="_<%= e._id %>"  style="width:100%;box-sizing:border-box">
+                                <option aria-label="Please select">  </option>
+                                <option value="1"> 1 </option>
+                                <option value="2"> 2 </option>
+                                <option value="3"> 3 </option>
+                                <option value="4"> 4 </option>
+                                <option value="5"> 5 </option>
+                              </select>
+                            </td>
+                            <td class="form-matrix-values">
+                              <select id="input_7_0_3" name="_<%= e._id %>"  style="width:100%;box-sizing:border-box">
+                                <option aria-label="Please select">  </option>
+                                <option value="1"> 1 </option>
+                                <option value="2"> 2 </option>
+                                <option value="3"> 3 </option>
+                                <option value="4"> 4 </option>
+                                <option value="5"> 5 </option>
+                              </select>
+                            </td>  
+                            <td class="form-matrix-values">
+                               <textarea name="_<%= e._id %>" cols="40" rows="1"></textarea>
+                            </td>                                         
+                          </tr>                         
+                          <% }) %> 
+                        </table>
+                      </div>
+                    </li>                   
+                      <div id="cid_6" class="form-input-wide">
+                        <div data-align="auto" class="form-buttons-wrapper form-buttons-auto">
+                          <button style="width: 20rem;" class="btn" type="submit">
+                            Unesi ocjene
+                          </button>
+                        </div>
+                      </div>
+                    </li>              
+                  </ul>
+                </div>           
+                        
+        
+            <input type="hidden" value="<%= user._id %>" name="userId">                         
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                   
+        </form>
+      </div>
+    </main>
+        
+<%- include('../includes/end.ejs') %>

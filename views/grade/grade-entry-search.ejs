@@ -1,0 +1,57 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+    <link rel="stylesheet" href="/css/grade-form/form.css">
+    <link rel="stylesheet" href="/css/orders.css">
+    <link rel="stylesheet" href="/css/table/grade-full-report-table.css">
+    <link rel="stylesheet" href="/css/table/grade-entry-report-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-admin.ejs') %>
+
+    <main>
+      <form class="record-form" action="/grade/grade-entry-report" method="GET">
+        <div class="form-control">
+            <input type="text" name="search" required placeholder="Unesi ime ili prezime">
+            <input class="btn" type="submit" value="Traži">
+        </div>
+    </form>    
+
+    <% if (user && user.length > 0) { %>  
+      <div class="container">          
+          <ul class="responsive-table">
+          <li class="table-header">
+              <div class="col col-1 text">Ime i Prezime</div>
+              <div class="col col-2 text">PJ</div>
+              <div class="col col-3 text">Pozicija</div>     
+              <div class="col col-4"></div>
+          </li>
+          <% user.forEach(u => { %>
+              <li class="table-row">
+                  <div class="col col-1" data-label="Ime i Prezime">                   
+                         <%= u.firstName %> <%= u.lastName %>                       
+                  </div>
+                  <div class="col col-2" data-label="Poslovna jedinica"><%= u.businessUnit.name %> </div>
+                  <div class="col col-3" data-label="Pozicija"><%= u.role.role %></div>          
+                  <div class="col col-4" data-label="">
+                      <a class="btn success" href="/grade/grade-entry-report/<%= u._id %>" >Pregled unosa</a>                  
+                  </div>
+                  
+              </li>
+          <% }) %> 
+          </ul>
+      </div>
+    <% } %>      
+    
+    <% if (hasError)  { %>   
+      <div class="centered">
+          <h3><%= errorMessage %> </h3>  
+      </div>                     
+  <% } %> 
+
+    </main>
+
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<%- include('../includes/end.ejs') %>

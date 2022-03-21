@@ -1,0 +1,92 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-internal.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <h1 class="centered"> <%= user.firstName %> <%= user.lastName %></h1>
+        <form class="record-form" action="/ic/<% if (editing) { %>edit-record<% } else { %>add-record<% } %>" method="POST">
+            <div class="form-control">
+                <label for="date">Datum</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'date') ? 'invalid' : '' %>"
+                    type="date" 
+                    name="date" 
+                    id="date"                                    
+                    
+                    value="<% if (editing || hasError || oldInput) { %><%= record.date || oldInput.date %><% } %>">              
+            </div>     
+            <div class="form-control">
+                <label for="amount">Iznos</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'amount') ? 'invalid' : '' %>"
+                    type="number" 
+                    name="amount" 
+                    id="amount"     
+                    step="0.01"      
+                                  
+                    value="<% if (editing || hasError || oldInput) { %><%= record.amount || oldInput.amount  %><% } %>"> 
+            </div>
+            <div class="form-control">
+                <label for="description">Opis</label>
+                <textarea 
+                    class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : '' %>"
+                    name="description" 
+                    id="description" 
+                    
+                    rows="5"><% if (editing || hasError || oldInput) { %><%= record.description || oldInput.description %><% } %></textarea>
+            </div>
+        
+            <input type="hidden" value="<%= user._id %>" name="userId">       
+            <% if (editing) { %>
+                <input type="hidden" value="<%= record._id %>" name="recordId">    
+            <% } %>                
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="centered">
+                <button class="btn" type="submit"><% if (editing) { %>Izmjeni sankciju<% } else { %>Unesi sankciju<% } %></button>
+            </div>
+            
+        </form>
+
+        <% if (records.length > 0) { %>  
+            <div class="container">          
+                <ul class="responsive-table">
+                <li class="table-header">
+                    <div class="col col-1 text">Datum</div>
+                    <div class="col col-2 text">Opis</div>
+                    <div class="col col-3 text">Iznos</div>
+                    <div class="col col-4"></div>
+                </li>
+                <% records.forEach(r => { %>
+                    <li class="table-row">
+                        <div class="col col-1" data-label="Datum"><%= r.date %>  </div>
+                        <div class="col col-2" data-label="Opis"> <%= r.description %></div>
+                        <div class="col col-3" data-label="Iznos"><%= r.amount %></div>
+                        <div class="col col-4" data-label="">                        
+                            <a class="btn success" href="/ic/edit-record/<%= r._id %>?edit=true" >Izmjeni</a>
+                            <input type="hidden" value="<%= r._id %>" name="recordId">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button class="btn danger" 
+                                href="/ic/delete-record/<%= r._id %>"                             
+                                onclick="if (confirm('Da li ste sigurni da želite obrisati odabranu sankciju?'))
+                                {deleteRecord(this)}else{event.preventDefault()};" >Obriši
+                            </button>                             
+                        </div>
+                        
+                    </li>
+                <% }) %> 
+                </ul>
+            </div>
+            <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+          <% } %>   
+    </main>
+    <script src="/js/record.js"></script>
+        
+<%- include('../includes/end.ejs') %>

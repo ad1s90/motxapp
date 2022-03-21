@@ -1,0 +1,74 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/bunit-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-admin.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+
+        <% if (message.length > 0) { %>
+            <div class="user-message user-message"><%= message %></div>
+        <% } %>     
+    
+        <form class="record-form" action="/admin/<% if (editing) { %>edit-bunit<% } else { %>add-bunit<% } %>" method="POST">
+            <div class="form-control">
+                <label for="name">Naziv prodavnice</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'name') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="name" 
+                    id="name"                                    
+                    
+                    value="<% if (editing || hasError || oldInput) { %><%= oldInput.bUnitName %><% } %>">              
+            </div>     
+            <div class="form-control">
+                <label for="number">Broj prodavnice</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'number') ? 'invalid' : '' %>"
+                    type="number" 
+                    name="number" 
+                    id="number"                                    
+                    
+                    value="<% if (editing || hasError || oldInput) { %><%= oldInput.bUnitNumber %><% } %>">              
+            </div>
+              
+            <input type="hidden" value="<%= oldInput.bUnitId %>" name="bUnitId">      
+             
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="centered">
+                <button class="btn" type="submit"><% if (editing) { %>Snimi izmjene<% } else { %>Kreiraj prodavnicu<% } %></button>
+            </div>
+            
+        </form>
+
+        <% if(bUnits.length > 0) { %> 
+            <div class="container">          
+                <ul class="responsive-table">
+                <li class="table-header">
+                    <div class="col col-1 text">Naziv</div>
+                    <div class="col col-2 text" >Broj</div>
+                    <div class="col col-3"></div>
+                </li>
+                    <% bUnits.forEach(b => { %> 
+                        <li class="table-row">
+                            <div class="col col-1" data-label="naziv"><%= b.name %>  </div>         
+                            <div class="col col-2" data-label="broj"><%= b.number %>  </div>       
+                            <div class="col col-3" data-label="">                        
+                                <a class="btn success" href="/admin/edit-bunit/<%= b._id %>?&edit=true" >Izmjeni</a>
+                                <input type="hidden" value="<%= b._id %>" name="bUnitId">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">               
+                            
+                        </li>
+                    <% }) %> 
+                </ul>
+            </div>
+        <% } %> 
+    </main>
+    <script src="/js/util.js"></script>
+<%- include('../includes/end.ejs') %>

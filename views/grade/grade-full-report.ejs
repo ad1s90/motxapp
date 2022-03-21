@@ -1,0 +1,93 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+    <link rel="stylesheet" href="/css/grade-form/form.css">
+    <link rel="stylesheet" href="/css/table/grade-full-report-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-admin.ejs') %>
+
+    <main>
+        <form class="record-form" action="" method="post">
+          <div class="form-control">
+            <label for="fromDate">Od datuma</label>    
+            <input type="date" name="fromDate" id="fromDate" required>
+            <label for="toDate">Do datuma</label>
+            <input type="date" name="toDate" id="toDate" required>      
+          </div>
+          <div class="centered">
+            <button class="btn" type="submit">DUGME</button>
+          </div>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        </form> 
+
+        <% if(data.length > 0 ) { %> 
+          <div  class="wrapper">
+            <table class="table"  id="tblData">
+              <tr class="row header green">
+                <th>Za period:</th>
+                <th><%= date.fDate %> - <%= date.tDate %></th>
+                <th></th>
+              </tr>
+              <tr class="row header green">
+                  <th class="cell">JMBG</th>
+                  <th class="cell">Ime i prezime</th>
+                  <th class="cell">Ekspeditivnost</th>
+                  <th class="cell">Stručnost u radu</th>
+                  <th class="cell">Volja za rad</th>
+                  <th class="cell">Pomaganje drugim</th>
+                  <th class="cell">Komentar</th>
+                  <th class="cell">Komentar</th>
+              </tr>
+              <% data.forEach(e => { %>
+              <tr class="row">
+                  <td class="cell"><%= e._id.jmbg %></td>
+                  <td class="cell"><%= e._id.firstName %> <%= e._id.lastName %></td>
+                  <td class="cell"><%= e.roundedExpedity %></td>
+                  <td class="cell"><%= e.roundedExpertise %></td>
+                  <td class="cell"><%= e.roundedWillingness %></td>
+                  <td class="cell"><%= e.roundedHelpfulness %></td>
+                  <td class="cell"><%= e.comment[0] %></td>
+                  <td class="cell"><%= e.comment[1] %></td>
+              </tr>    
+              <% }) %> 
+        
+          </table>
+        </div>
+        <div class="centered"> 
+          <button class="btn" id="export_button" >Export</button>
+        </div>
+      <% } %>    
+      
+      <% if(!isData) {%>
+        <div class="centered">
+          <h3>Nema podataka za odabrani period!</h3>
+        </div>
+        
+      <% } %>  
+
+    </main>
+    <script>
+      function html_table_to_excel(type)
+          {
+              var data = document.getElementById('tblData');
+
+              var file = XLSX.utils.table_to_book(data, {raw: true});
+
+              XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+
+              XLSX.writeFile(file, 'ocjene.' + type);
+          }
+
+          const export_button = document.getElementById('export_button');
+
+          if(export_button) {
+            export_button.addEventListener('click', () =>  {
+              html_table_to_excel('xlsx');
+          });
+          }           
+  </script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<%- include('../includes/end.ejs') %>

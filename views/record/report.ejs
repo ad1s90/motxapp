@@ -1,0 +1,48 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/employee.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-internal.ejs') %>
+    <main>    
+        <% if (records.length > 0) { %>  
+            <div class="container">          
+                <ul class="responsive-table">
+                <li class="table-header">
+                    <div class="col col-1 text">Datum</div>
+                    <div class="col col-2 text">Opis</div>
+                    <div class="col col-3 text">Iznos</div>
+                    <div class="col col-4"></div>
+                </li>
+                <% records.forEach(r => { %>
+                    <li class="table-row">
+                        <div class="col col-1" data-label="Datum"><%= r.date %>  </div>
+                        <div class="col col-2" data-label="Opis"> <%= r.description %></div>
+                        <div class="col col-3" data-label="Iznos"><%= r.amount %></div>
+                        <div class="col col-4" data-label="">                        
+                            <a class="btn success" href="/ic/edit-record/<%= r._id %>?&edit=true" >Izmjeni</a>
+                            <input type="hidden" value="<%= r._id %>" name="recordId">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                            <button class="btn danger" 
+                                href="/ic/delete-record/<%= r._id %>"                             
+                                onclick="if (confirm('Da li ste sigurni da želite obrisati odabranu sankciju?'))
+                                {deleteRecord(this)}else{event.preventDefault()};" >Obriši
+                            </button>                    
+                        
+                    </li>
+                <% }) %> 
+                </ul>
+            </div>
+          <% } else { %>     
+            <div class="centered">
+                <h3>Odabrani korisnik nema unesenih sankcija</h3>  
+            </div> 
+          <% } %> 
+    </main>
+    <script src="/js/record.js"></script>
+<%- include('../includes/end.ejs') %>
+

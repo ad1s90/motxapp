@@ -1,0 +1,38 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/orders.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+    <link rel="stylesheet" href="/css/grade-form/form.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-admin.ejs') %>
+
+    <main>
+      <div class="centered">  
+        <% if(grades.length > 0) { %> 
+          <ul class="orders centered">        
+            <% grades.forEach(g => { %>      
+              <li class="orders__item">
+                  <h1>Datum ocjene: <%= g.formatedDate %> </h1>
+                  <h1>Ocjenio: <%= g.creator.firstName %> <%= g.creator.lastName %></h1>
+                  <h1>Pozicija: <%= g.creator.role.role %> </h1>
+                  <ul class="orders__products">                 
+                      <li class="orders__products-item"> Ekspeditivnost: <%= g.expedity %> </li> 
+                      <li class="orders__products-item"> Stručnost: <%= g.expedity %> </li> 
+                      <li class="orders__products-item"> Voljda za rad: <%= g.expedity %> </li> 
+                      <li class="orders__products-item"> Pomaganje drugima: <%= g.expedity %> </li>
+                      <li class="orders__products-item"> Komentar: <%= g.comment %> </li>              
+                  </ul>
+              </li>
+           <% }); %>
+        </ul>   
+      <% } else { %> 
+        <h1>Nema podataka!</h1>
+        <a href="/admin/user">Nazad</a>
+      <% } %> 
+      </div>
+    </main>
+        
+<%- include('../includes/end.ejs') %>

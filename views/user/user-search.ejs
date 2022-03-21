@@ -1,0 +1,55 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/employee.css">
+    <link rel="stylesheet" href="/css/table/user-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-admin.ejs') %>
+    <main>    
+         <form class="record-form" action="/admin/user" method="GET">
+             <div class="form-control">
+                 <input type="text" name="search" required placeholder="Unesi ime ili prezime">
+                 <input class="btn" type="submit" value="Traži">
+             </div>
+         </form>    
+
+         <% if (user && user.length > 0) { %>  
+            <div class="container">          
+                <ul class="responsive-table">
+                <li class="table-header">
+                    <div class="col col-1 text">Ime i Prezime</div>
+                    <div class="col col-2 text">PJ</div>
+                    <div class="col col-3 text">Pozicija</div>
+                    <div class="col col-4 text">Status</div>
+                    <div class="col col-5"></div>
+                </li>
+                <% user.forEach(u => { %>
+                    <li class="table-row">
+                        <div class="col col-1" data-label="Ime i Prezime">
+                            <a style="text-decoration: none; text-decoration: none;" href="/grade/report/<%= u._id %>">
+                               <%= u.firstName %> <%= u.lastName %>
+                            </a>
+                        </div>
+                        <div class="col col-2" data-label="Poslovna jedinica"><%= u.businessUnit.name %> </div>
+                        <div class="col col-3" data-label="Pozicija"><%= u.role.role %></div>
+                        <div class="col col-4" data-label="Status"><% if(u.isActive) { %> <%= "Aktivan" %> <% } else { %> <%= "Neaktivan" %>  <% } %>  </div>
+                        <div class="col col-5" data-label="">
+                            <a class="btn success" href="/admin/edit-user/<%= u._id %>?&edit=true" >Izmjeni</a>                  
+                        </div>
+                        
+                    </li>
+                <% }) %> 
+                </ul>
+            </div>
+          <% } %>      
+          
+          <% if (hasError)  { %>   
+            <div class="centered">
+                <h3><%= errorMessage %> </h3>  
+            </div>                     
+        <% } %> 
+    
+    </main>
+<%- include('../includes/end.ejs') %>

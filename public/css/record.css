@@ -1,0 +1,27 @@
+.record-form {
+  width: 20rem;
+  max-width: 90%;
+  margin: auto;
+  display: block;
+}
+
+.record-item {
+  width: 20rem;
+  max-width: 95%;
+  margin: 1rem;
+}
+
+.record__title {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.record__price {
+  text-align: center;
+  color: #4d4d4d;
+  margin-bottom: 0.5rem;
+}
+
+.precord__description {
+  text-align: center;
+}

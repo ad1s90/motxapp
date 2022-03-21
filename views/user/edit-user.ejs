@@ -1,0 +1,115 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-admin.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <h1 class="centered"> <%= user.firstName %> <%= user.lastName %></h1>
+        <form class="record-form" action="/admin/<% if (editing) { %>edit-user<% } else { %>add-user<% } %>" method="POST">
+            <div class="form-control">
+                <label for="firstName">Ime</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'firstName') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="firstName" 
+                    id="firstName"                                    
+                    
+                    value="<% if (editing || hasError || oldInput) { %><%= oldInput.firstName || user.firstName  %><% } %>">              
+            </div>    
+            <div class="form-control">
+                <label for="lastName">Prezime</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'lastName') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="lastName" 
+                    id="lastName"                                    
+                    
+                    value="<% if (editing || hasError || oldInput) { %><%= oldInput.lastName || user.lastName  %><% } %>">              
+            </div>  
+            <div class="form-control">
+                <label for="jmbg">JMBG</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'jmbg') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="jmbg" 
+                    id="jmbg"                                    
+                    
+                    value="<% if (editing || hasError || oldInput) { %><%= oldInput.jmbg || user.jmbg  %><% } %>">              
+            </div>        
+            <label for="stores">Poslovna jedinica: </label>
+            <select class="form-control " name="businessUnit" id="businessUnit">                
+                <option  value="" selected disabled hidden>Odaberi poslovnu jedinicu</option>
+                    <% stores.forEach((store) => { %>
+                      <option value="<%=store._id%>"><%=store.name%></option>
+                    <% }); %>              
+            </select>      
+            <br>                 
+            <label for="role">Funkcija: </label>
+            <select class="form-control" name="role" id="role">            
+                <option value="" selected disabled hidden>Odaberi funkciju</opt>
+                    <% roles.forEach((role) => { %>
+                         <option value="<%=role._id%>"><%=role.role%></option>
+                    <% }); %>             
+            </select>
+            <div class="form-control">
+                <label for="startDate">Početak rada</label>
+                <input 
+                    class="<%= validationErrors.find(e => e.param === 'startDate') ? 'invalid' : '' %>"
+                    type="date" 
+                    name="startDate" 
+                    id="startDate"                                    
+                    
+                    value="<% if (editing || hasError || oldInput) { %><%= oldInput.startDate || user.startDate  %><% } %>">              
+            </div>  
+            <% if (editing) { %> 
+
+                <div class="form-control">
+                    <label for="username">Korisničko ime</label>
+                    <input 
+                        class="<%= validationErrors.find(e => e.param === 'username') ? 'invalid' : '' %>"
+                        type="text" 
+                        name="username" 
+                        id="username"                                    
+                        
+                        value="<%= oldInput.username || user.username  %>">              
+                </div>   
+                <div class="form-control">
+                    <label for="password">Password</label>
+                    <input 
+                        class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>"
+                        type="text" 
+                        name="password" 
+                        id="password"                                    
+                        
+                        value="<%= oldInput.password || user.password  %>">               
+                </div>
+                <div>
+                    <label for="isActive">Označi kao neaktivan</label>
+                    <input class="form-control" type="checkbox" id="isActive" name="isActive" <% if(!user.isActive) { %> <%= "checked" %>  <% } %>   >         
+                </div>
+            <% } %> 
+              
+            <input type="hidden" value="<%= user._id %>" name="userId">      
+             
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="centered">
+                <button class="btn" type="submit"><% if (editing) { %>Snimi izmjene<% } else { %>Kreiraj korisnika<% } %></button>
+            </div>
+            
+        </form>
+    </main>
+
+    <% if(editing) { %> 
+        <input type="hidden" id="myRole" value="<%= user.role._id || user.role %>">
+        <input type="hidden" id="myBUnit" value="<%= user.businessUnit._id || user.businessUnit %>">
+    <% } %> 
+
+    <script src="/js/util.js"></script>
+<%- include('../includes/end.ejs') %>

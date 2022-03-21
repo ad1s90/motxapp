@@ -1,0 +1,98 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-admin.ejs') %>
+
+    <main>
+        <div class="centered">
+            
+            <h1><% if(!editing) { %> <%= "Korisnik uspješno kreiran!" %> <% } else { %> <%= "Izmjena uspješno snimljena!" %>  <% } %>  </h1>
+        </div>
+
+       <form class="record-form">
+            <div class="form-control">
+                <label for="firstName">Ime</label>          
+                <input          
+                    type="text" 
+                    name="firstName" 
+                    id="firstName"                                  
+                    disabled
+                    value="<%= user[0].firstName %>">              
+            </div>    
+            <div class="form-control">
+                <label for="lastName">Prezime</label>
+                <input          
+                    type="text" 
+                    name="lastName" 
+                    id="lastName"                                  
+                    disabled
+                    value="<%= user[0].lastName %>">              
+            </div>   
+            <div class="form-control">
+                <label for="username">Korisničko ime</label>
+                <input          
+                    type="text" 
+                    name="username" 
+                    id="username"                                  
+                    disabled
+                    value="<%= user[0].username %>">              
+            </div>    
+            <div class="form-control">
+                <label for="password">Password</label>
+                <input          
+                    type="text" 
+                    name="password" 
+                    id="password"                                  
+                    disabled
+                    value="<%= user[0].password %>">              
+            </div>    
+            <div class="form-control">
+                <label for="businessUnit">Poslovna jedinica</label>
+                <input          
+                    type="text" 
+                    name="businessUnit" 
+                    id="businessUnit"                                  
+                    disabled
+                    value="<%= user[0].businessUnit.name %>">              
+            </div>    
+            <div class="form-control">
+                <label for="role">Funkcija</label>
+                <input          
+                    type="text" 
+                    name="role" 
+                    id="role"                                  
+                    disabled
+                    value="<%= user[0].role.role %>">              
+            </div>    
+            <div class="form-control">
+                <label for="startDate">Početak rada</label>
+                <input          
+                    type="text" 
+                    name="startDate" 
+                    id="startDate"                                  
+                    disabled
+                    value="<%= user[0].startDate %>">              
+            </div>  
+            <div class="form-control">
+                <label for="jmbg">JMBG</label>
+                <input          
+                    type="text" 
+                    name="jmbg" 
+                    id="jmbg"                                  
+                    disabled
+                    value="<%= user[0].jmbg %>">              
+            </div>                       
+            <input type="hidden" value="<%= user[0]._id %>" name="userId">                    
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="centered">
+                <a class="btn success" href="/admin/" >Nastavi</a>
+            </div>
+            
+        </form>
+    </main>
+        
+<%- include('../includes/end.ejs') %>
