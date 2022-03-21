@@ -7,10 +7,7 @@
         <% if (isAuthenticated) { %>
           <li class="main-header__item">
             <a class="<%= path === '/record' ? 'active' : '' %>" href="/login"></a>
-          </li>     
-          <li  class="main-header__item">
-            <a class="<%= path === '/change-password' ? 'active' : '' %>" href="/admin/change-password">Promjeni password</a>
-          </li>
+          </li> 
         <% } %>
       </li>
     </ul>
@@ -40,9 +37,7 @@
       <li class="mobile-nav__item">
         <a class="<%= path === '/record' ? 'active' : '' %>" href="/login"></a>
       </li>    
-      <li class="mobile-nav__item">
-        <a class="<%= path === '/change-password' ? 'active' : '' %>" href="/admin/change-password">Promjeni password</a>
-      </li>     
+
     <% } %> <% if (!isAuthenticated) { %>      
       <li class="mobile-nav__item">
         <a class="<%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
