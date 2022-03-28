@@ -28,7 +28,11 @@ const store = new MongoDBStore({
   collection: 'sessions',
 });
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 app.use(compression());
 
 const csrfProtection = csrf({ cookie: false });
