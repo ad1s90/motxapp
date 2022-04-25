@@ -1,0 +1,43 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/employee.css">
+    <link rel="stylesheet" href="/css/table/multientry-search-table.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-internal.ejs') %>
+    <main>    
+         <form class="record-form" action="/ic/multientry" method="GET">
+             <div class="form-control">
+                 <input type="text" name="search" required placeholder="Naziv poslovnice">
+                 <input class="btn" type="submit" value="Traži">
+             </div>
+         </form>    
+
+         <% if (bunits.length > 0) { %>  
+            <div class="container">          
+                <ul class="responsive-table">
+                <li class="table-header">
+                    <div class="col col-1 text centered">Prodavnica</div> 
+                </li>
+             
+                <% bunits.forEach(b => { %>
+                    <li class="table-row">
+                        <div class="col col-1 centered" data-label="Prodavnica">
+                            <a class="btn" href="/ic/multientry/<%= b._id %>" ><%= b.name %></a>              
+                        </div>                        
+                    </li>
+                <% }) %> 
+                </ul>
+            </div>
+          <% } %>      
+          
+          <% if (hasError)  { %>   
+            <div class="centered">
+                <h3><%= errorMessage %> </h3>  
+            </div>                     
+        <% } %> 
+    
+    </main>
+<%- include('../includes/end.ejs') %>

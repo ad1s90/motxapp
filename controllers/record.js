@@ -99,9 +99,12 @@ exports.postEditRecord = async (req, res, next) => {
   const errors = validationResult(req);
 
   try {
-    // ubaciti šta ako nema recorda?
     // preći na mongoose update?
     const record = await Record.findById(recordId);
+    if (!record) {
+      return res.redirect('/');
+    }
+
     const userId = record.userId;
     record.date = updatedDate;
     record.description = updatedDescription;
@@ -327,6 +330,51 @@ exports.deleteRecord = async (req, res, next) => {
     const error = new Error(err);
     error.httpStatusCode = 500;
     return next(error);
+  }
+};
+
+// unos po poslovnici
+exports.entryPerBunit = async (req, res, next) => {
+  const search = req.query.search;
+  let bUnits;
+
+  if (search) {
+    try {
+      bUnits = await BusinessUnit.fuzzySearch(search);
+      console.log(bUnits);
+
+      // checks if result of query is empty
+      if (Object.keys(bUnits).length === 0 || !bUnits) {
+        return res.render('record/store-search', {
+          pageTitle: 'Sankcije',
+          path: '/multientry',
+          employees: '',
+          errorMessage: 'Prodavnica pod traženim imenom nije pronađena',
+          bunits: bUnits,
+          hasError: true,
+        });
+      }
+
+      res.render('record/store-search', {
+        pageTitle: 'Sankcije',
+        path: '/multientry',
+        employees: '',
+        errorMessage: 'Prodavnica pod traženim imenom nije pronađena',
+        bunits: bUnits,
+        hasError: false,
+      });
+    } catch (err) {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    }
+  } else {
+    res.render('record/store-search', {
+      pageTitle: 'Sankcije',
+      path: '/multientry',
+      bunits: [],
+      hasError: false,
+    });
   }
 };
 

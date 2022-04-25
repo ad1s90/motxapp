@@ -5,6 +5,7 @@ module.exports = function (role, role2) {
     if (!req.session.isLoggedIn) {
       return res.redirect('/login');
     }
+
     try {
       const user = await User.findById(req.session.user._id).populate('role');
       if (role !== user.role.role && role2 !== user.role.role) {

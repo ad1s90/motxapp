@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const passwordCheck = require('../middleware/password-check');
 
 exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
@@ -62,7 +63,7 @@ exports.postLogin = async (req, res, next) => {
             errorMessage: '',
             obligatory: true,
             role: retrivedUser.role.role,
-            message: 'Password uspješno izmijenjen!',
+            message: '',
           });
         }
         res.redirect(route);

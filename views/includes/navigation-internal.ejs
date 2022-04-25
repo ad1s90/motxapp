@@ -9,13 +9,16 @@
         <% if (isAuthenticated) { %>
           <li class="main-header__item">
             <a class="<%= path === '/record' ? 'active' : '' %>" href="/ic/record">Sankcije</a>
-          </li>            
+          </li>     
+          <li class="main-header__item">
+            <a  class="<%= path === '/multientry' ? 'active' : '' %>" href="/ic/multientry">Unos po poslovnici  </a>
+          </li>           
           </li> 
           <li class="main-header__item">
             <a class="<%= path === '/full-report' ? 'active' : '' %>" href="/ic/fullreport">Zbirni izvještaj</a>
           </li>
           <li  class="main-header__item">
-            <a class="<%= path === '/change-password' ? 'active' : '' %>" href="/admin/change-password">Promjeni password</a>
+            <a class="<%= path === '/change-password' ? 'active' : '' %>" href="/admin/change-password">Promijeni password</a>
           </li>
         <% } %>
       </li>
@@ -47,6 +50,9 @@
           <li class="mobile-nav__item">
             <a class="<%= path === '/record' ? 'active' : '' %>" href="/ic/record">Sankcije</a>
           </li>     
+          <li class="mobile-nav__item">
+            <a class="<%= path === '/multientry' ? 'active' : '' %>" href="/ic/multientry">Unos po poslovnici</a>
+          </li>   
           <li class="mobile-nav__item">
             <a class="<%= path === '/full-report' ? 'active' : '' %>" href="/ic/fullreport">Zbirni izvještaj</a>
           </li>

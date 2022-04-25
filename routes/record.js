@@ -5,6 +5,7 @@ const router = express.Router();
 
 const recordController = require('../controllers/record');
 const isAuth = require('../middleware/is-auth');
+const passwordCheck = require('../middleware/password-check');
 
 // get za dodavanje sankcije
 
@@ -33,6 +34,13 @@ router.get(
   '/fullreport',
   isAuth('Interna kontrola'),
   recordController.getFullReport
+);
+
+// get za unos po poslovnici
+router.get(
+  '/multientry',
+  isAuth('Interna kontrola'),
+  recordController.entryPerBunit
 );
 
 // post zbirni izvještaj
