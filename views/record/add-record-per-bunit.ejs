@@ -1,0 +1,85 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+    <link rel="stylesheet" href="/css/grade-form/record-form.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-internal.ejs') %>
+
+    <main>
+            <div id="validation-message" class="user-message user-message--error" style="display:none">Za svaku unesenu sankciju mora biti unesen opis </div>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>  
+        <form class="form-all" action="/ic/multientry" method="POST">
+                 <div style="margin-left: 10rem;" role="main">
+                  <ul class="form-section">      
+                        <table cellPadding="4" cellSpacing="0" class="form-matrix-table">
+                          <tr class="">
+                            <th class="form-matrix-headers form-matrix-column-headers" >       
+                                <label id="label_7_col_0"> Ime i prezime </label>                        
+                            </th>
+                            <th class="form-matrix-headers form-matrix-column-headers" >    
+                                <label id="label_7_col_1"> Funkcija </label>                            
+                            </th>
+                            <th scope="col" class="form-matrix-headers form-matrix-column-headers">
+                              <label id="label_7_col_2"> Iznos </label>
+                            </th>
+                            <th scope="col" class="form-matrix-headers form-matrix-column-headers">
+                              <label id="label_7_col_3"> Opis </label>
+                            </th>                                                             
+                          </tr>
+                          <tr class="">
+                            <% employees.forEach((e, i) => { %> 
+                              <th scope="row" class="form-matrix-headers form-matrix-row-headers">
+                                <label id="label_7_row_0"> <%=e.firstName %> <%=e.lastName %>    </label>
+                              </th>
+                              <th scope="row" class="form-matrix-headers form-matrix-row-headers">
+                                <label id="label_7_row_1"> <%=e.role.role %> </label>
+                              </th>
+                                <input type="hidden" value="<%= e._id %>" name="employeeId">    
+                                <input type="hidden" value="<%= e.firstName %>" name="firstName">
+                                <input type="hidden" value="<%= e.lastName %>" name="lastName">                                        
+                            <td class="form-matrix-values" >
+                                <input required type="number" value="0" onkeyup="validationCheck()" id="input_number_<%= i %> " name="_<%= e._id %>"  />                
+                            </td>
+                            <td class="form-matrix-values">
+                                <input class="warning" type="text" id="input_text_<%= i %>" onkeyup="validationCheck()" name="_<%= e._id %>" style="width: 350px;">     
+                                                 
+                            </td>                                                             
+                          </tr>                         
+                          <% }) %> 
+                        </table>
+                      </div>
+                    <li>                   
+                      <div id="cid_6" class="form-input-wide">
+                        <div data-align="auto" class="form-buttons-wrapper form-buttons-auto" style="margin-left: 27rem;">     
+                            <label for="date">Datum</label>              
+                          <input type="date" required name="date" id="">
+                        </div>                          
+                        <div data-align="auto" class="form-buttons-wrapper form-buttons-auto">                   
+                          <button style="width: 20rem;" class="btn" id="submit-btn" type="submit">
+                            Unesi sankcije
+                          </button>
+                        </div>
+                        
+                      </div>
+                    </li>              
+                  </ul>
+                </div>           
+                        
+        
+            <input type="hidden" value="<%= user._id %>" name="userId">                         
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                   
+        </form>
+      </div>
+    </main>
+
+    <script src="/js/record-entry-validation.js"></script>
+
+  
+        
+<%- include('../includes/end.ejs') %>

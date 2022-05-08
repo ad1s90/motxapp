@@ -1,0 +1,43 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="stylesheet" href="/css/table/report-table.css">
+    <link rel="stylesheet" href="/css/grade-form/record-form.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation-internal.ejs') %>
+
+    <main>           
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>  
+
+        <div class="centered">
+            <% if(successful.length > 0) { %> 
+                <h3>Uspješno su unesene sankcije za sljedeće radnike:</h3>
+                <% successful.forEach(s => { %>                     
+                    <p><%= s.firstName %> <%= s.lastName %></p>
+                <% }) %> 
+            <% } %> 
+        </div>
+
+        <div class="centered">
+            <% if(failed.length > 0) { %> 
+                <h3 style="color: red;">Sankcije nisu uspješno unesene za sljedeće radnike: </h3>
+                <% failed.forEach(f => { %> 
+                    <p><%= f.firstName %> <%= f.lastName %></p>
+                <% }) %> 
+            <% } %> 
+        </div>
+        
+        <div class="centered">
+            <a class="btn success" href="/ic/multientry/" >Nastavi</a>
+        </div>
+    </main>
+
+    <script src="/js/record-entry-validation.js"></script>
+
+  
+        
+<%- include('../includes/end.ejs') %>

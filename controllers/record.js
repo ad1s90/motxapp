@@ -4,6 +4,7 @@ const BusinessUnit = require('../models/business-unit');
 const User = require('../models/user');
 const Role = require('../models/role');
 const Record = require('../models/record');
+const { path } = require('express/lib/application');
 
 const ITEMS_PER_PAGE = 10;
 
@@ -333,7 +334,7 @@ exports.deleteRecord = async (req, res, next) => {
   }
 };
 
-// unos po poslovnici
+// get unos po poslovnici
 exports.entryPerBunit = async (req, res, next) => {
   const search = req.query.search;
   let bUnits;
@@ -341,7 +342,6 @@ exports.entryPerBunit = async (req, res, next) => {
   if (search) {
     try {
       bUnits = await BusinessUnit.fuzzySearch(search);
-      console.log(bUnits);
 
       // checks if result of query is empty
       if (Object.keys(bUnits).length === 0 || !bUnits) {
@@ -372,18 +372,103 @@ exports.entryPerBunit = async (req, res, next) => {
     res.render('record/store-search', {
       pageTitle: 'Sankcije',
       path: '/multientry',
+      errorMessage: '',
       bunits: [],
       hasError: false,
     });
   }
 };
 
-// search regex
-function escapeRegex(text) {
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-}
+//get za unos po poslovnici
+exports.getBUnit = async (req, res, next) => {
+  const bUnitId = req.params.bUnitId;
 
-// pomoćna fukncija za traženje sankcije i formiratiranje datuma
+  try {
+    const bUnit = await BusinessUnit.findById(bUnitId);
+    if (!bUnit) {
+      res.redirect('/');
+    }
+
+    const employees = await User.find({ businessUnit: bUnit._id })
+      .populate('role')
+      .sort({ role: 'asc' });
+
+    res.render('record/add-record-per-bunit', {
+      pageTitle: 'Sankcije',
+      path: '/multientry',
+      bunits: [],
+      errorMessage: '',
+      employees: employees,
+      hasError: false,
+      user: req.session.user,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};
+
+exports.submitRecordPerBUnit = async (req, res, next) => {
+  const date = req.body.date ? new Date(req.body.date).toISOString() : '';
+  let employeeIds = req.body.employeeId;
+  const creator = req.session.user;
+  let successful = [];
+  const failed = [];
+  const records = [];
+
+  if (!Array.isArray(employeeIds)) {
+    employeeIds = [employeeIds];
+  }
+
+  // vratiti da nije unesen datum
+  if (!date) return;
+
+  employeeIds.forEach((e) => {
+    const id = '_' + e;
+    const amount = req.body[id][0];
+    let description = req.body[id][1];
+
+    if (amount === '0' || amount === '') return;
+    if (amount !== '0' && description === '') {
+      failed.push(e);
+      return;
+    }
+
+    const record = new Record({
+      date,
+      description,
+      amount,
+      creator,
+      userId: e,
+    });
+
+    records.push(record);
+  });
+
+  const unsuccessful = await User.find({ _id: { $in: failed } });
+  const savedRecords = await Record.insertMany(records);
+  const result = [];
+
+  savedRecords.forEach((r) => {
+    result.push(r.userId);
+  });
+
+  successful = await User.find({ _id: { $in: result } });
+
+  // dodati i koje su sankcije unesene opis i iznos
+
+  return res.render('record/record-created', {
+    pageTitle: 'Sankcije',
+    path: '/multientry',
+    errorMessage: '',
+    hasError: false,
+    failed: unsuccessful,
+    successful: successful,
+  });
+};
+
+// util function search record & date formatting
 async function getRecords(userId, page, ITEMS_PER_PAGE) {
   const records = await Record.find({ userId })
     .sort({ date: 'desc' })
@@ -398,6 +483,7 @@ async function getRecords(userId, page, ITEMS_PER_PAGE) {
   return records;
 }
 
+// util function for date transformation
 function dateTransform(date) {
   const arrDate = date.split('T')[0].split('-');
   date = arrDate[2] + '.' + arrDate[1] + '.' + arrDate[0] + '.';

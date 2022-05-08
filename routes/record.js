@@ -43,6 +43,19 @@ router.get(
   recordController.entryPerBunit
 );
 
+// get za poslovnicu za koju se unose sankcije
+router.get(
+  '/multientry/:bUnitId',
+  isAuth('Interna kontrola'),
+  recordController.getBUnit
+);
+
+router.post(
+  '/multientry',
+  isAuth('Interna kontrola'),
+  recordController.submitRecordPerBUnit
+);
+
 // post zbirni izvještaj
 router.post(
   '/fullreport',
@@ -50,7 +63,7 @@ router.post(
   recordController.postFullReport
 );
 
-// post za dodvanje sankcije
+// post za dodavanje sankcije
 router.post(
   '/add-record',
   [
