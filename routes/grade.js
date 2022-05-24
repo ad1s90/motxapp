@@ -6,10 +6,8 @@ const gradeController = require('../controllers/grade');
 const isAuth = require('../middleware/is-auth');
 const Grade = require('../models/grade');
 
-// get za dodavanje ocjena
 router.get('/', isAuth('Šef', 'Zamjenik'), gradeController.getAddGrades);
 
-// post za dodavanje ocjene
 router.post(
   '/add-grade',
   [
@@ -40,22 +38,36 @@ router.post(
   gradeController.postAddGrades
 );
 
-// get za puni izvještaj
-router.get('/grade-full-report', gradeController.getGradeReport);
+router.get(
+  '/grade-full-report',
+  isAuth('Admin'),
+  gradeController.getGradeReport
+);
 
-// post za puni izvještaj
-router.post('/grade-full-report', gradeController.postGradeReport);
+router.post(
+  '/grade-full-report',
+  isAuth('Admin'),
+  gradeController.postGradeReport
+);
 
-// get za izvještaj po useru
-router.get('/report/:userId', gradeController.getUserReport);
+router.get('/report/:userId', isAuth('Admin'), gradeController.getUserReport);
 
-// get za izvještaj unosa ocjena
-router.get('/grade-entry-report', gradeController.getGradeEntryPerUser);
+router.get(
+  '/grade-entry-report',
+  isAuth('Admin'),
+  gradeController.getGradeEntryPerUser
+);
 
-// post za izvještaj unosa
-router.get('/grade-entry-report/:employeeId', gradeController.getGradeEntry);
+router.get(
+  '/grade-entry-report/:employeeId',
+  isAuth('Admin'),
+  gradeController.getGradeEntry
+);
 
-// post za brisanje entrija
-router.post('/delete-grade-entry', gradeController.postDeleteGradeEntry);
+router.post(
+  '/delete-grade-entry',
+  isAuth('Admin'),
+  gradeController.postDeleteGradeEntry
+);
 
 module.exports = router;

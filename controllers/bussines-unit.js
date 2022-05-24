@@ -1,7 +1,9 @@
 const { validationResult } = require('express-validator');
 const BusinessUnit = require('../models/business-unit');
 
-// get za dodavanje prodavnicve
+// @desc    Get page for adding a new business unit
+// @route   GET /admin/add-bunit
+// @access  Private
 exports.getBUnit = async (req, res, next) => {
   const message = req.flash('success');
 
@@ -27,7 +29,9 @@ exports.getBUnit = async (req, res, next) => {
   }
 };
 
-// post za dodavanje prodavnice
+// @desc    Submit a new business unit
+// @route   POST /admin/add-bunit
+// @access  Private
 exports.postAddBUnit = async (req, res, next) => {
   const bUnitName = req.body.name;
   const bUnitNumber = req.body.number;
@@ -76,7 +80,9 @@ exports.postAddBUnit = async (req, res, next) => {
   }
 };
 
-// get za izmjenu prodavnice
+// @desc    Get page for editing a business unit
+// @route   GET /admin/edit-bunit
+// @access  Private
 exports.getEditBUnit = async (req, res, next) => {
   const bUnitId = req.params.bUnitId;
 
@@ -106,7 +112,9 @@ exports.getEditBUnit = async (req, res, next) => {
   }
 };
 
-// post za izmjenu prodavnice
+// @desc    Submit a change on a business unit
+// @route   POST /admin/edit-bunit
+// @access  Private
 exports.postEditBUnit = async (req, res, next) => {
   const bUnitName = req.body.name;
   const bUnitNumber = req.body.number;

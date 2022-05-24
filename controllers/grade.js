@@ -3,7 +3,9 @@ const { validationResult } = require('express-validator');
 const User = require('../models/user');
 const Grade = require('../models/grade');
 
-// get za početnu za unos ocjene - šef
+// @desc    Get page for adding a new grade - for supervisor
+// @route   GET /grade
+// @access  Private
 exports.getAddGrades = async (req, res, next) => {
   const supervisor = req.session.user;
 
@@ -33,7 +35,9 @@ exports.getAddGrades = async (req, res, next) => {
   }
 };
 
-// post za dodavanje ocjene - šef
+// @desc    Submit grades
+// @route   POST /add-grade
+// @access  Private
 exports.postAddGrades = async (req, res, next) => {
   let employeeIds = req.body.employeeId;
   const creator = req.body.userId;
@@ -121,7 +125,9 @@ exports.postAddGrades = async (req, res, next) => {
   }
 };
 
-// get za puni izvještaj - admin
+// @desc    Get page for full report - admin
+// @route   GET /grade/grade-full-report
+// @access  Private
 exports.getGradeReport = async (req, res, next) => {
   res.render('grade/grade-full-report', {
     pageTitle: 'Ocjene',
@@ -134,7 +140,9 @@ exports.getGradeReport = async (req, res, next) => {
   });
 };
 
-// post za puni izvještaj
+// @desc    Submit for full report
+// @route   POST /grade/grade-full-report
+// @access  Private
 exports.postGradeReport = async (req, res, next) => {
   const fromDate = new Date(req.body.fromDate).toISOString();
   const toDate = new Date(req.body.toDate).toISOString();
@@ -192,7 +200,9 @@ exports.postGradeReport = async (req, res, next) => {
   }
 };
 
-// get za izvještaj po korisniku
+// @desc    Get page for a grade report per user - admin
+// @route   GET /grade/report/:userId
+// @access  Private
 exports.getUserReport = async (req, res, next) => {
   const userId = req.params.userId;
 
@@ -217,7 +227,9 @@ exports.getUserReport = async (req, res, next) => {
   }
 };
 
-// get pregled unosa ocjena
+// @desc    Get page for a grade entry - admin
+// @route   GET /grade/grade-entry-report
+// @access  Private
 exports.getGradeEntryPerUser = async (req, res, next) => {
   const search = req.query.search;
   let users;
@@ -244,7 +256,9 @@ exports.getGradeEntryPerUser = async (req, res, next) => {
   }
 };
 
-// post za pregled unosa ocjena
+// @desc    Submit for a grade entry report - admin
+// @route   POST /grade/grade-entry-report
+// @access  Private
 exports.getGradeEntry = async (req, res, next) => {
   const employeeId = req.params.employeeId;
 
@@ -276,7 +290,9 @@ exports.getGradeEntry = async (req, res, next) => {
   }
 };
 
-// post za brisanje unosa
+// @desc    Delete grade entry - admin
+// @route   POST /grade/delete-grade-entry
+// @access  Private
 exports.postDeleteGradeEntry = async (req, res, next) => {
   const employeeId = req.body.employeeId;
   const createdAt = req.body.createdAt;
@@ -320,6 +336,7 @@ exports.postDeleteGradeEntry = async (req, res, next) => {
   }
 };
 
+// Helper function for date transformation
 function dateTransform(date) {
   const arrDate = date.split('T')[0].split('-');
   date = arrDate[2] + '.' + arrDate[1] + '.' + arrDate[0] + '.';

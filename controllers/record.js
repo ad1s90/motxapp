@@ -8,7 +8,9 @@ const { path } = require('express/lib/application');
 
 const ITEMS_PER_PAGE = 10;
 
-// get za dodavanje sankcije
+// @desc    Get page for adding a new record
+// @route   GET /ic/add-record/:userId
+// @access  Private
 exports.getAddRecord = async (req, res, next) => {
   const page = +req.query.page || 1;
   const userId = req.params.userId;
@@ -44,7 +46,9 @@ exports.getAddRecord = async (req, res, next) => {
   }
 };
 
-// get za izmjenu sankcije
+// @desc    Get page for editing a record
+// @route   GET /ic/edit-record/:recordId
+// @access  Private
 exports.getEditRecord = async (req, res, next) => {
   const editMode = req.query.edit;
 
@@ -90,7 +94,9 @@ exports.getEditRecord = async (req, res, next) => {
   }
 };
 
-// post funckija za submit izmjene sankcije
+// @desc    Edit a record
+// @route   POST /ic/edit-record
+// @access  Private
 exports.postEditRecord = async (req, res, next) => {
   const recordId = req.body.recordId;
   const updatedDate = req.body.date;
@@ -132,7 +138,9 @@ exports.postEditRecord = async (req, res, next) => {
   }
 };
 
-// Dodaje novu sankciju
+// @desc    Submit a new record
+// @route   POST /ic/add-record
+// @access  Private
 exports.postAddRecord = async (req, res, next) => {
   const date = req.body.date ? new Date(req.body.date).toISOString() : '';
   const description = req.body.description;
@@ -191,7 +199,9 @@ exports.postAddRecord = async (req, res, next) => {
   res.redirect('/ic/add-record/' + userId);
 };
 
-// search uposlenika
+// @desc    Employee search
+// @route   POST /ic/record
+// @access  Private
 exports.getEmployees = async (req, res, next) => {
   const search = req.query.search;
   let users;
@@ -238,7 +248,9 @@ exports.getEmployees = async (req, res, next) => {
   }
 };
 
-// izvještaj sankcija za korisnika
+// @desc    Get page for record report per user
+// @route   GET /ic/report/:userId
+// @access  Private
 exports.getReport = async (req, res, next) => {
   const userId = req.params.userId;
   try {
@@ -264,7 +276,9 @@ exports.getReport = async (req, res, next) => {
   }
 };
 
-// zbirni izvještaj get page
+// @desc    Get page for a full record report
+// @route   GET /ic/report/:userId
+// @access  Private
 exports.getFullReport = async (req, res, next) => {
   res.render('record/full-report', {
     pageTitle: 'Zbirni izvještaj',
@@ -277,7 +291,9 @@ exports.getFullReport = async (req, res, next) => {
   });
 };
 
-// generisanje zbirnog izvještaja
+// @desc    Generate a full report
+// @route   GET /ic/fullreport
+// @access  Private
 exports.postFullReport = async (req, res, next) => {
   const fromDate = new Date(req.body.fromDate).toISOString();
   const toDate = new Date(req.body.toDate).toISOString();
@@ -321,7 +337,9 @@ exports.postFullReport = async (req, res, next) => {
   }
 };
 
-// brisanje sankcije
+// @desc    Delete a record
+// @route   POST /ic/delete-record/userId
+// @access  Private
 exports.deleteRecord = async (req, res, next) => {
   const recordId = req.params.recordId;
   try {
@@ -334,7 +352,9 @@ exports.deleteRecord = async (req, res, next) => {
   }
 };
 
-// get unos po poslovnici
+// @desc    Get search for business units
+// @route   GET /ic/multientry
+// @access  Private
 exports.entryPerBunit = async (req, res, next) => {
   const search = req.query.search;
   let bUnits;
@@ -379,7 +399,9 @@ exports.entryPerBunit = async (req, res, next) => {
   }
 };
 
-//get za unos po poslovnici
+// @desc    Get page for record entry per business unit
+// @route   GET /ic/multientry
+// @access  Private
 exports.getBUnit = async (req, res, next) => {
   const bUnitId = req.params.bUnitId;
 
@@ -409,6 +431,9 @@ exports.getBUnit = async (req, res, next) => {
   }
 };
 
+// @desc    Submit records per business unit
+// @route   POST /ic/multientry
+// @access  Private
 exports.submitRecordPerBUnit = async (req, res, next) => {
   const date = req.body.date ? new Date(req.body.date).toISOString() : '';
   let employeeIds = req.body.employeeId;

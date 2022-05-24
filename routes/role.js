@@ -7,10 +7,8 @@ const isAuth = require('../middleware/is-auth');
 
 const router = express.Router();
 
-// get za početnu za kreiranje funkcije
 router.get('/add-role', isAuth('Admin'), roleController.getAddRole);
 
-// post za kreiranje funkcije
 router.post(
   '/add-role',
   [

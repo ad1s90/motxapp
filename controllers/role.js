@@ -2,7 +2,9 @@ const { validationResult } = require('express-validator');
 
 const Role = require('../models/role');
 
-// get za dodavanje funkcije
+// @desc    Get page for adding a new role
+// @route   GET /admin/add-role
+// @access  Private
 exports.getAddRole = async (req, res, next) => {
   const message = req.flash('success');
 
@@ -27,7 +29,9 @@ exports.getAddRole = async (req, res, next) => {
   }
 };
 
-// post za dodavanje funkcije
+// @desc    Submit a new role
+// @route   POST /admin/add-role
+// @access  Private
 exports.postAddRole = async (req, res, next) => {
   const desc = req.body.role;
 
@@ -74,7 +78,9 @@ exports.postAddRole = async (req, res, next) => {
   }
 };
 
-// get za izmjenu funkcije
+// @desc    Get page for edit a role
+// @route   GET /admin/edit-role/:roleId
+// @access  Private
 exports.getEditRole = async (req, res, next) => {
   const roleId = req.params.roleId;
 
@@ -100,7 +106,9 @@ exports.getEditRole = async (req, res, next) => {
   }
 };
 
-// post za izmjenu funkcije
+// @desc    Submit a role change
+// @route   GET /admin/edit-role
+// @access  Private
 exports.postEditRole = async (req, res, next) => {
   const role = req.body.role;
   const roleId = req.body.roleId;

@@ -7,7 +7,6 @@ const isAuth = require('../middleware/is-auth');
 
 const router = express.Router();
 
-// get za početnu za prodavnice
 router.get('/add-bunit', isAuth('Admin'), bUnitController.getBUnit);
 
 router.get(
@@ -16,7 +15,6 @@ router.get(
   bUnitController.getEditBUnit
 );
 
-// post za kreiranje prodavnice
 router.post(
   '/add-bunit',
   [
@@ -47,7 +45,6 @@ router.post(
   bUnitController.postAddBUnit
 );
 
-// post za edit prodavnice
 router.post(
   '/edit-bunit',
   [

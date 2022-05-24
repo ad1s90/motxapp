@@ -1,6 +1,9 @@
 const User = require('../models/user');
 const passwordCheck = require('../middleware/password-check');
 
+// @desc    Get login page
+// @route   GET /
+// @access  Public
 exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     pageTitle: 'Login',
@@ -12,6 +15,9 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
+// @desc    Log in request
+// @route   POST /login
+// @access  Public
 exports.postLogin = async (req, res, next) => {
   const username = req.body.username.toLowerCase();
   const password = req.body.password;
@@ -76,6 +82,9 @@ exports.postLogin = async (req, res, next) => {
   }
 };
 
+// @desc    Log out request
+// @route   POST /logout
+// @access  Private
 exports.postLogout = (req, res, next) => {
   res.clearCookie('_csrf');
   req.session.cookie = {};
@@ -85,6 +94,7 @@ exports.postLogout = (req, res, next) => {
   });
 };
 
+// Helper function for routing based on role
 function getIndexRoute(role) {
   let indexRoute = '';
   switch (role) {

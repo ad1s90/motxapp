@@ -5,7 +5,9 @@ const Role = require('../models/role');
 const BusinessUnit = require('../models/business-unit');
 const User = require('../models/user');
 
-// get za dodavanje usera
+// @desc    Get page for adding a new user
+// @route   GET /admin/
+// @access  Private
 exports.getAddUser = async (req, res, next) => {
   try {
     const roles = await Role.find({});
@@ -30,7 +32,9 @@ exports.getAddUser = async (req, res, next) => {
   }
 };
 
-// get za izmjenu usera
+// @desc    Get a page for edit a user
+// @route   GET /admin/edit-user/:userId
+// @access  Private
 exports.getEditUser = async (req, res, next) => {
   const editMode = req.query.edit;
   const userId = req.params.userId;
@@ -69,7 +73,9 @@ exports.getEditUser = async (req, res, next) => {
   }
 };
 
-// post za izmjenu usera
+// @desc    Submit a user change
+// @route   POST /admin/edit-user
+// @access  Private
 exports.postEditUser = async (req, res, next) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -163,7 +169,9 @@ exports.postEditUser = async (req, res, next) => {
   }
 };
 
-// post za dodavanje usera
+// @desc    Submit a new user
+// @route   POST /admin/add-user
+// @access  Private
 exports.postAddUser = async (req, res, next) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -230,7 +238,9 @@ exports.postAddUser = async (req, res, next) => {
   }
 };
 
-// search usera
+// @desc    Get a user search page
+// @route   GET /admin/user
+// @access  Private
 exports.getUser = async (req, res, next) => {
   const search = req.query.search;
   let users;
@@ -253,7 +263,9 @@ exports.getUser = async (req, res, next) => {
   }
 };
 
-// get za promjenu passworda
+// @desc    Get a password change page
+// @route   GET /change-password
+// @access  Private
 exports.getChangePassword = async (req, res, next) => {
   const user = req.session.user;
   try {
@@ -279,7 +291,9 @@ exports.getChangePassword = async (req, res, next) => {
   }
 };
 
-// post za promjenu passworda
+// @desc    Submit a password change
+// @route   POST /change-password
+// @access  Private
 exports.postChangePassword = async (req, res, next) => {
   const user = req.session.user;
   const password = req.body.password;
@@ -337,7 +351,7 @@ exports.postChangePassword = async (req, res, next) => {
   }
 };
 
-// pomoćna funkcija za provjeru da li je username zauzet
+// Helper function to check if username exists and handle that case
 async function ifUsernameExists(username) {
   try {
     const ifExists = await User.findOne({ username });

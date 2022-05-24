@@ -9,16 +9,12 @@ const Role = require('../models/role');
 const User = require('../models/user');
 const isAuth = require('../middleware/is-auth');
 
-// get za dodavalnje usera
 router.get('/', isAuth('Admin'), userController.getAddUser);
 
-// get za search
 router.get('/user', isAuth('Admin'), userController.getUser);
 
-// get za edit usera
 router.get('/edit-user/:userId', isAuth('Admin'), userController.getEditUser);
 
-// post za dodavanje usera
 router.post(
   '/add-user',
   [
@@ -66,7 +62,6 @@ router.post(
   userController.postAddUser
 );
 
-// post za edit usera
 router.post(
   '/edit-user',
   [
@@ -130,10 +125,8 @@ router.post(
   userController.postEditUser
 );
 
-// get change password
 router.get('/change-password', userController.getChangePassword);
 
-// post change password
 router.post(
   '/change-password',
   [
