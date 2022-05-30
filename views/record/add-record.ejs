@@ -27,10 +27,10 @@
                 <label for="amount">Iznos</label>
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'amount') ? 'invalid' : '' %>"
-                    type="number" 
+                    type="number"                
                     name="amount" 
                     id="amount"     
-                    step="0.01"      
+                
                                   
                     value="<% if (editing || hasError || oldInput) { %><%= record.amount || oldInput.amount  %><% } %>"> 
             </div>

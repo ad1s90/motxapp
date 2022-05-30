@@ -149,7 +149,7 @@ exports.postGradeReport = async (req, res, next) => {
 
   try {
     const data = await Grade.find({}).populate(
-      'employeeId',
+      'employeeId creator',
       'firstName lastName jmbg'
     );
 

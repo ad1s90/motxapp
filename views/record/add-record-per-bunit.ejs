@@ -43,7 +43,7 @@
                                 <input type="hidden" value="<%= e.firstName %>" name="firstName">
                                 <input type="hidden" value="<%= e.lastName %>" name="lastName">                                        
                             <td class="form-matrix-values" >
-                                <input required type="number" value="0" onkeyup="validationCheck()" id="input_number_<%= i %> " name="_<%= e._id %>"  />                
+                                <input required type="number" step="0.01" value="0" onkeyup="validationCheck()" id="input_number_<%= i %> " name="_<%= e._id %>"  />                
                             </td>
                             <td class="form-matrix-values">
                                 <input class="warning" type="text" id="input_text_<%= i %>" onkeyup="validationCheck()" name="_<%= e._id %>" style="width: 350px;">     
