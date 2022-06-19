@@ -82,13 +82,26 @@ exports.postAddGrades = async (req, res, next) => {
   }
 
   try {
+    const supervisorData = await User.findById(creator).populate('role');
+
+    console.log(supervisorData);
+
     employeeIds.forEach(async (e) => {
       const id = '_' + e;
       const expedity = req.body[id][0];
       const expertise = req.body[id][1];
       const willingness = req.body[id][2];
       const helpfulness = req.body[id][3];
-      const comment = req.body[id][4];
+      const comment =
+        req.body[id][4].length > 0
+          ? supervisorData.firstName +
+            ' ' +
+            supervisorData.lastName +
+            ' (' +
+            supervisorData.role.role +
+            '): ' +
+            req.body[id][4]
+          : '';
 
       if (!expedity || !expertise || !willingness || !helpfulness) {
         result = false;

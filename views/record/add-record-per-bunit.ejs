@@ -7,6 +7,7 @@
 
 <body>
     <%- include('../includes/navigation-internal.ejs') %>
+    <%- include('../includes/function.ejs') %>
 
     <main>
             <div id="validation-message" class="user-message user-message--error" style="display:none">Za svaku unesenu sankciju mora biti unesen opis </div>
@@ -24,11 +25,14 @@
                             <th class="form-matrix-headers form-matrix-column-headers" >    
                                 <label id="label_7_col_1"> Funkcija </label>                            
                             </th>
+                            <th class="form-matrix-headers form-matrix-column-headers" >    
+                              <label id="label_7_col_2"> Početak rada </label>                            
+                          </th>
                             <th scope="col" class="form-matrix-headers form-matrix-column-headers">
-                              <label id="label_7_col_2"> Iznos </label>
+                              <label id="label_7_col_3"> Iznos </label>
                             </th>
                             <th scope="col" class="form-matrix-headers form-matrix-column-headers">
-                              <label id="label_7_col_3"> Opis </label>
+                              <label id="label_7_col_4"> Opis </label>
                             </th>                                                             
                           </tr>
                           <tr class="">
@@ -38,6 +42,9 @@
                               </th>
                               <th scope="row" class="form-matrix-headers form-matrix-row-headers">
                                 <label id="label_7_row_1"> <%=e.role.role %> </label>
+                              </th>
+                              <th scope="row" class="form-matrix-headers form-matrix-row-headers">
+                                <label id="label_7_row_1"> <%= dateTransform(e.startDate) %> </label>
                               </th>
                                 <input type="hidden" value="<%= e._id %>" name="employeeId">    
                                 <input type="hidden" value="<%= e.firstName %>" name="firstName">
