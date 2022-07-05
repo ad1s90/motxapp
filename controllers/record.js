@@ -411,7 +411,10 @@ exports.getBUnit = async (req, res, next) => {
       res.redirect('/');
     }
 
-    const employees = await User.find({ businessUnit: bUnit._id })
+    const employees = await User.find({
+      businessUnit: bUnit._id,
+      isActive: true,
+    })
       .populate('role')
       .sort({ role: 'asc' });
 
