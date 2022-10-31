@@ -29,6 +29,7 @@
     "mongoose": "^6.1.6",
     "mongoose-fuzzy-searching": "^2.0.2",
     "morgan": "^1.10.0",
+    "nocache": "^3.0.4",
     "password-validator": "^5.2.1"
   },
   "devDependencies": {

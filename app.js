@@ -9,6 +9,7 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const helmet = require('helmet');
 const compression = require('compression');
+const nocache = require('nocache');
 
 const recordRoutes = require('./routes/record');
 const userRoutes = require('./routes/user');
@@ -27,6 +28,8 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions',
 });
+
+app.use(nocache());
 
 app.use(
   helmet({
