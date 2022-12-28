@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 
 const User = require('../models/user');
 const Grade = require('../models/grade');
@@ -43,17 +44,17 @@ exports.postAddGrades = async (req, res, next) => {
   const creator = req.body.userId;
   let result = true;
   const errors = validationResult(req);
+  const supervisor = req.session.user;
 
   if (!Array.isArray(employeeIds)) {
     employeeIds = [employeeIds];
   }
 
   if (!errors.isEmpty()) {
-    const newErrors = errors.array().filter((er) => {
-      console.log(er);
+    const newErrors = errors.array().filter((err) => {
+      console.log(err);
       return er.msg !== 'Invalid value';
     });
-    const supervisor = req.session.user;
 
     try {
       const employees = await User.find({
@@ -83,8 +84,18 @@ exports.postAddGrades = async (req, res, next) => {
 
   try {
     const supervisorData = await User.findById(creator).populate('role');
+    const employeesNo = await User.countDocuments({
+      businessUnit: supervisor.businessUnit,
+      isActive: true,
+    });
 
-    console.log(supervisorData);
+    if (employeesNo - 1 != employeeIds.length) {
+      return res.render('grade-error', {
+        pageTitle: 'Error',
+        path: '/grades',
+        errMsg: 'Desila se greška!',
+      });
+    }
 
     employeeIds.forEach(async (e) => {
       const id = '_' + e;
@@ -116,16 +127,19 @@ exports.postAddGrades = async (req, res, next) => {
         helpfulness,
         comment,
       });
+
+      if (!result) {
+        return res.render('grade-error', {
+          pageTitle: 'Error',
+          path: '/grades',
+          errMsg: 'Sve ocjene moraju biti unesene!',
+        });
+      }
+
       if (result) {
         await grade.save();
       }
     });
-    if (!result) {
-      return res.render('grade-error', {
-        pageTitle: 'Error',
-        path: '/grades',
-      });
-    }
 
     return res.render('grade/grade-created', {
       pageTitle: 'Ocjene',

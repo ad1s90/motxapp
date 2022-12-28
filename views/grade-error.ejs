@@ -3,9 +3,9 @@
 
 <body>
     <%- include('includes/navigation.ejs') %>
-    <div class="centered">
-        <h1>Sve ocjene moraju biti popunjene</h1>
-        <p>Molimo Vas da pokušate ponovo!</p>
+    <div class="centered">       
+        <h2><%=errMsg  %></h2>
+        <p>Ocjene nisu uspješno snimljene, molimo Vas da pokušate ponovo!</p>  
         <a href="/grade">Nazad</a>
     </div>
 
